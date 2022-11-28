@@ -1,0 +1,17 @@
+path: .gem_rbs_collection
+
+sources:
+- name: ruby/gem_rbs_collection
+  remote: https://github.com/ruby/gem_rbs_collection.git
+  revision: main
+  repo_dir: gems
+
+gems:
+- name: rbs
+  ignore: true
+- name: steep
+  ignore: true
+- name: yard
+  ignore: true
+- name: commonmarker
+  ignore: true

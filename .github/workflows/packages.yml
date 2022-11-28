@@ -1,0 +1,25 @@
+name: GitHub Packages
+on: {release: {types: [published]}}
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+    
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2'
+        bundler-cache: true
+      env:
+        BUNDLE_RUBYGEMS__PKG__GITHUB__COM: Bearer:${{ github.token }}
+    
+    - name: Package Gem
+      run: bundle exec gem build --output mygem.gem mygem.gemspec
+    
+    - name: Publish to GitHub Packages
+      run: bundle exec gem push --host https://rubygems.pkg.github.com/AUTHOR mygem.gem
+      env: {GEM_HOST_API_KEY: "Bearer ${{ github.token }}"}

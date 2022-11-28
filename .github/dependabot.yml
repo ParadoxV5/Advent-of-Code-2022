@@ -1,0 +1,15 @@
+version: 2
+updates:
+
+- package-ecosystem: bundler
+  directory: /
+  ignore:
+  - update-types: [version-update:semver-patch]
+    dependency-name: '*'
+  schedule:
+    interval: weekly
+#
+#- package-ecosystem: gitsubmodule
+#  directory: /
+#  schedule:
+#    interval: weekly
