@@ -1,3 +1,6 @@
 # frozen_string_literal: true
+
+ruby '~> 3.1'
+
 source 'https://rubygems.org'
-gemspec
+gem 'rbs', '~> 2.8.0'
