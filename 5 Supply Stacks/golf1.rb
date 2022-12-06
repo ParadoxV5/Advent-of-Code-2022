@@ -1,0 +1,2 @@
+# Part 1: 187 chars
+d,_,i=*$<.chunk{_1>?!};s=d[1].reverse.map{_1.gsub(/.(.)../m).map{$1[/\w/]}}.transpose.map &:compact;i[1].map{c,f,t=_1.scan(/\d+/).map &:to_i;c.times{s[t-1]<<s[f-1].pop}};p s.sum '',&:last
