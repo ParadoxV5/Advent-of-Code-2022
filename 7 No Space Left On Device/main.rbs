@@ -1,0 +1,10 @@
+class Directory < Hash[String, Directory]
+  attr_reader parent: Directory?
+  attr_reader dir_size: Integer
+  def initialize: (Directory? parent) -> void
+  
+  def add_file: (int amount) -> void
+  def dir_sizes: () -> Array[Integer]
+end
+
+ROOT: Directory

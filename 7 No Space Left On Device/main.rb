@@ -19,7 +19,7 @@ end
 
 cd = ROOT = Directory.new(nil)
 File.foreach('input.txt', chomp: true) do |line|
-  next if line.eql?('$ cd /')
+  next if line.eql?('$ cd /') # already created `ROOT`
   detail, _, name = line.rpartition(' ')
   case detail
   when '$ cd'
