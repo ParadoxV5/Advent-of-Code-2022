@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
 class Directory < Hash
-  attr_reader :parent
+  ROOT = new
+  
+  attr_accessor :parent
+  protected :parent=
   attr_reader :dir_size
-  def initialize(parent)
-    @parent = parent
+  def initialize
+    super() do |this, name|
+      mkdir = Directory.new
+      mkdir.parent = this
+      this[name] = mkdir
+    end
     @dir_size = 0
   end
   
@@ -17,15 +24,21 @@ class Directory < Hash
   end
 end
 
-cd = ROOT = Directory.new(nil)
+cd = Directory::ROOT
 File.foreach('input.txt', chomp: true) do |line|
-  next if line.eql?('$ cd /') # already created `ROOT`
   detail, _, name = line.rpartition(' ')
   case detail
-  when '$ cd'
-    cd = name.eql?('..') ? cd.parent : cd[name]
-  when 'dir'
-    cd[name] = Directory.new(cd)
+    when '$ cd'
+      cd = case name
+        when '..'
+          cd.parent
+        when '/'
+          Directory::ROOT
+      else
+        cd[name]
+      end
+    when '$ ls', 'dir'
+      # Do nothing
   else
     cd.add_file(detail.to_i)
   end
