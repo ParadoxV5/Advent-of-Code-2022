@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Directory < Hash
-  ROOT = new
-  
   attr_accessor :parent
   protected :parent=
   attr_reader :dir_size
@@ -14,6 +12,8 @@ class Directory < Hash
     end
     @dir_size = 0
   end
+  
+  ROOT = new
   
   def add_file(amount)
     @dir_size += amount
@@ -44,7 +44,7 @@ File.foreach('input.txt', chomp: true) do |line|
   end
 end
 
-dir_sizes = ROOT.dir_sizes
+dir_sizes = Directory::ROOT.dir_sizes
 required_space = dir_sizes.last - 40000000 # for Part 2
 
 puts(
