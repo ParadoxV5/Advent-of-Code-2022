@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 puts File.
   foreach('input.txt'). # each line
   slice_after(/^$/). # group using blank line as dividers

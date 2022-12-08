@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 puts(
   File.foreach('input.txt').count do |pair|
     # "a-b,x-y"

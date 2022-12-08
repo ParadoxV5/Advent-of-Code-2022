@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 matches = File.readlines('input.txt', chomp: true) # each line without the line break
 
 # Actually easier and less brainpower to just hardcode the combinations out

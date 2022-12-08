@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 File.open('input.txt') do |file|
   # Parse the drawing
   stacks = file

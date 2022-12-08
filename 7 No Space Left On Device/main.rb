@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Directory < Hash
   attr_accessor :parent
   protected :parent=

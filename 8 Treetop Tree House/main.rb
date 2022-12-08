@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class String
   attr_accessor :aoc_visibility
   attr_accessor :aoc_scenic_score
