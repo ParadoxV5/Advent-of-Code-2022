@@ -2,18 +2,20 @@
 
 class String
   attr_accessor :aoc_visibility
+  attr_accessor :aoc_scenic_score
 end
 
-$grid = File.foreach('input.txt', chomp: true).map { _1.chars }
+$grid = File.foreach('input.txt', chomp: true).map {|row| row.chars.each { _1.aoc_scenic_score = 1 } }
 
-def scan
+def scan # analyze leftward viewing from `tree`
   $grid.each do |row|
-    max_tree = ' '
-    row.first&.aoc_visibility = true
-    row.each do |tree|
-      if tree > max_tree # taller than all previous trees
+    row.each_with_index do |tree, x|
+      visible = (x-1).downto(0).none? do |prev_x|
+        row[prev_x] >= tree and tree.aoc_scenic_score *= x - prev_x
+      end
+      if visible
         tree.aoc_visibility = true
-        max_tree = tree
+        tree.aoc_scenic_score *= x
       end
     end
   end
@@ -27,4 +29,9 @@ scan
 $grid.each(&:reverse!)
 scan
 
-puts $grid.sum { _1.count(&:aoc_visibility) }
+puts(
+  'Part 1',
+  $grid.sum { _1.count(&:aoc_visibility) },
+  'Part 2',
+  $grid.flatten.map!(&:aoc_scenic_score).max
+)
