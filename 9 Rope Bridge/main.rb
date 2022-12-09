@@ -8,7 +8,7 @@ tail_positions = Set.new
 
 puts(
   File.foreach('input.txt').sum do |line|
-    direction, _, steps = line.partition(' ')
+    direction, steps = line.split(' ')
     steps.to_i.times.count do
       # Move head
       case direction
@@ -30,6 +30,9 @@ puts(
         if dx.abs > 1 or dy.abs > 1 # disconnect
           succ[0] += dx <=> 0 # x <=> 0 => signum(x)
           succ[1] += dy <=> 0
+        else
+          # Don’t need to update
+          break
         end
       end
       
