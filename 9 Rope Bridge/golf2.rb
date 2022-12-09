@@ -1,12 +1,9 @@
-# Part 2: 205 chars
-X=[0]*10
-Y=X.dup
+# Part 2: 165 chars
+R=[0i]*10
 A=[]
-while d=$<.getc
-gets.to_i.times{(d=~/U|D/?X: Y)[0]+=d.ord<=>80
-9.times{|a|x=X[a]-X[b=a+1]
-y=Y[a]-Y[b]
-(x.abs>1||y.abs>1)&&(X[b]+=x<=>0
-Y[b]+=y<=>0)}
-A<<[X[-1],Y[-1]]}end
+while v=$<.getc
+gets.to_i.times{R[0]+=1i**(v.ord%15)
+9.times{d=R[_1]-R[i=_1+1]
+d.abs2>3&&R[i]+=(d.real<=>0)+(d.imag<=>0).i}
+A<<R[-1]}end
 p A.uniq.size
