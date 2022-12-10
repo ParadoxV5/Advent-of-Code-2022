@@ -1,7 +1,7 @@
 N = 10 # Part 1: `2`
 KNOTS = Array.new(N, 0i) # Complex suggested by Discord@sampersand#8419
 TAIL_POSITIONS = []
-DIRECTION_UNITS = 'RULD'.each_char.with_index.to_h { [_1, 1i ** _2] }
+DIRECTION_UNITS = %w[R U L D].each_with_index.to_h { [_1, 1i ** _2] }
 
 while (direction = $stdin.getc)
   $stdin.gets.to_i.times do

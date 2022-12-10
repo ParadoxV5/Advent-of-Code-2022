@@ -31,7 +31,7 @@ puts(
           succ[0] += dx <=> 0 # x <=> 0 => signum(x)
           succ[1] += dy <=> 0
         else
-          # Don’t need to update
+          # Don’t need to update this and thus the other knots too
           break
         end
       end
