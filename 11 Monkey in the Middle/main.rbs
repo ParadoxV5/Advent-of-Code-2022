@@ -1,0 +1,17 @@
+class Monkey
+  attr_accessor self.common_divisor: Integer
+  attr_accessor self.part1: boolish
+  MONKEYS: Array[Monkey]
+
+  attr_accessor items: int
+  @operation: Proc
+  @test_divisor: untyped
+  @true_target: int
+  @false_target: int
+  attr_accessor inspect_count: int
+  
+  def initialize: (int items, _ToS operation, int test_divisor, int true_target, int false_target) -> void
+  
+  def inspect_items: () -> void
+  def self.inspect_items: () -> void
+end

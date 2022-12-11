@@ -1,6 +1,6 @@
 class Monkey
   class << self
-    attr_accessor :part1, :common_divisor # `common_divisor` is for optimizing Part 2
+    attr_accessor :common_divisor, :part1 # `common_divisor` is for optimizing Part 2
   end
   MONKEYS = []
   @common_divisor = 1
