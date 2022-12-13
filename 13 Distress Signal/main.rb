@@ -1,29 +1,31 @@
 class Array
   include Comparable
-  
-  alias old_cmp <=>
-  def <=>(other)
-    other = [other] unless other.respond_to?(:each)
-    old_cmp(other)
-  end
+  alias aoc_old_cmp <=>
+  def <=>(other) = aoc_old_cmp(Array(other))
 end
 class Integer
-  alias old_cmp <=>
-  def <=>(other)
-    other.respond_to?(:each) ? [self] <=> other : old_cmp(other)
-  end
+  alias aoc_old_cmp <=>
+  def <=>(other) = aoc_old_cmp(other) || (other <=> self)&.-@
 end
 
+PACKETS = File.foreach('input.txt').filter_map { eval _1 }
+
 puts(
-  File.foreach('input.txt', '', chomp: true).with_index.sum do |pair, zero_based_index|
-    pair.lines.map do |line|
-      line = eval line
-    end.reduce(&:<=>).positive? ? 0 : zero_based_index + 1
+  'Part 1',
+  PACKETS.each_slice(2).with_index.sum do |pair, zero_based_index|
+    pair.inject(&:<=) ? zero_based_index.succ : 0
   end
 )
 
-ordered_packets = File.foreach('input.txt', chomp:true).reject(&:empty?).map do eval _1
-end
-ordered_packets.push([[2]], [[6]])
-ordered_packets.sort!
-puts (ordered_packets.find_index([[2]]) + 1) * (ordered_packets.find_index([[6]]) + 1)
+DIVIDERS = [ [[2]], [[6]] ]
+PACKETS.push(*DIVIDERS)
+PACKETS.sort!
+
+puts(
+  'Part 2',
+  DIVIDERS.map do |divider|
+    PACKETS.bsearch_index do
+      divider <=> _1 or raise "uncomparable divider #{divider}"
+    end&.succ
+  end.inject(&:*)
+)
