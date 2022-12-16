@@ -1,0 +1,8 @@
+type coord = Integer
+type point = [coord, coord]
+
+PART1_Y: coord
+PART1_BEACONS_XS: Set[coord]
+
+EDGES: Set[[point, point]]
+POINTS: Set[point]
