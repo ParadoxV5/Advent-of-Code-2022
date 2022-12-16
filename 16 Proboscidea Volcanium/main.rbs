@@ -1,0 +1,17 @@
+class GraphNode[X]
+  attr_accessor val: X
+  attr_reader neighbors: Array[instance]
+  attr_accessor traversed: boolish
+  def initialize: (X val, *instance neighbors) -> void
+  
+  def unvisited_neighbors: -> Array[instance]
+  
+  def <=>: (instance other) -> Integer?
+end
+
+class Valve < GraphNode[Integer]
+  attr_accessor open_duration: Integer?
+end
+
+VALVES: Hash[String, Valve]
+INPUT_REGEXP: Regexp
