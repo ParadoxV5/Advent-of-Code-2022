@@ -1,0 +1,18 @@
+type coords = Complex
+type rock = Array[coords]
+type chamber_rocks = Set[coords]
+
+WIDTH: Integer
+CHAMBER_ROCKS: chamber_rocks
+
+ROCK_TEMPLATES: Array[rock]
+ROCK_TEMPLATES_STREAM: Enumerator[rock, nil]
+
+JETS: Array[coords]
+JETS_STREAM: Enumerator[coords, nil]
+
+HISTORY_HASH: Hash[chamber_rocks, [Integer, Integer]]
+NUM_OF_ROCKS: Integer
+class Object
+  def drop_rock: () -> void
+end

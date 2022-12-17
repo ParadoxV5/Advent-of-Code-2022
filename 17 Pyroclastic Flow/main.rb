@@ -35,7 +35,7 @@ JETS = File.read('input.txt').chomp.chars.map do|arrow|
   else
     warn 'unknown input ' + arrow
     0
-  end
+  end.to_c
 end
 # Infinite enumerator of {JETS}
 JETS_STREAM = JETS.cycle
