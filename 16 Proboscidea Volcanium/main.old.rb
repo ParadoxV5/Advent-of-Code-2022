@@ -1,20 +1,16 @@
-class GraphNode
-  attr_accessor :val, :traversed
+class Valve
+  attr_accessor :rate, :traversed, :open_duration
   attr_reader :neighbors
-  def initialize(val = nil, *neighbors)
-    @val = val
+  def initialize(rate = 0, *neighbors)
+    @rate = rate
     @neighbors = neighbors
     @traversed = false
   end
   
   def unvisited_neighbors = neighbors.reject(&:traversed)
   
-  def <=>(other) = val <=> other.val
-  def inspect = "GraphNode(#{val})[#{neighbors.size} neighbors]"
-end
-
-class Valve < GraphNode
-  attr_accessor :open_duration
+  def <=>(other) = rate <=> other.rate
+  def inspect = "GraphNode(#{rate})[#{neighbors.size} neighbors]"
 end
 
 VALVES = Hash.new {|this, key| this[key] = Valve.new }
@@ -23,7 +19,7 @@ INPUT_REGEXP = /^Valve (\S+) has flow rate=(\d++); tunnels? leads? to valves? (.
 File.foreach('input.txt', chomp: true) do |line|
   id, rate, neighbors = INPUT_REGEXP.match(line).captures
   valve = VALVES[id]
-  valve.val = rate.to_i
+  valve.rate = rate.to_i
   valve.neighbors.replace(neighbors.split(', ').map { VALVES[_1] })
 end
 
@@ -32,11 +28,11 @@ end
 # warn(
 #   VALVES.each_value.count do|valve|
 #     working_neighbors = valve.neighbors.filter_map do|neighbor|
-#       rate = neighbor.val
+#       rate = neighbor.rate
 #       rate if rate.positive?
 #     end
 #     warn working_neighbors.inspect if working_neighbors.size >= 2
-#     valve.val.positive? and not working_neighbors.empty?
+#     valve.rate.positive? and not working_neighbors.empty?
 #   end
 # )
 
@@ -58,7 +54,7 @@ bfs = [VALVES['AA']]
       bfsq << neighbors
       neighbors.reject(&:open_duration).max
     end.max
-    if best and best.val.positive?
+    if best and best.rate.positive?
       to_open = best
     else
       bfs = bfsq.flatten.uniq
@@ -67,5 +63,5 @@ bfs = [VALVES['AA']]
 end
 puts(
   'Part 1',
-  VALVES.each_value.sum { _1.open_duration&.*(_1.val) or 0 }
+  VALVES.each_value.sum { _1.open_duration&.*(_1.rate) or 0 }
 )
