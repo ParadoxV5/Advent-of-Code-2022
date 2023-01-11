@@ -29,7 +29,7 @@ air_to_search = Range.new(dim_min.pred, dim_max.succ).to_a.repeated_permutation(
 surfaces_to_filter = surfaces.to_set
 
 bfs = [ Array.new(3, dim_min) ]
-while (this = bfs.pop)
+while (this = bfs.shift)
   # Delete from listings, then queue up neighbors if valid
   surfaces_to_filter.delete(this)
   bfs.push(*neighbors(this)) if air_to_search.delete?(this)
