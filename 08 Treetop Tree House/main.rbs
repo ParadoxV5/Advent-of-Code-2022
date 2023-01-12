@@ -1,0 +1,8 @@
+class Tree
+  include Comparable
+  
+  attr_accessor height: Comparable::_WithSpaceshipOperator
+  attr_accessor visibility: boolish
+  attr_accessor scenic_score: Integer
+  def initialize: (Comparable::_WithSpaceshipOperator height) -> void
+end
