@@ -1,0 +1,13 @@
+class DLLNode[E]
+  attr_accessor value: E
+  attr_accessor prev1: instance
+  attr_accessor next1: instance
+  def initialize: (E value) -> void
+  
+  def self.link: (*instance nodes) -> Array[instance]
+  
+  def prev: (?Integer n) -> instance
+  def next: (?Integer n) -> instance
+  
+  def shift: (Integer n) -> [instance, self, instance]
+end
