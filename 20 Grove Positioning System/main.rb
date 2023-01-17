@@ -48,9 +48,12 @@ class DLLNode
   end
 end
 
+$part2 = true # Part 1: false
+
 pointer = nil
 init_arr = File.foreach('input.txt').map do|line|
   line = line.to_i
+  line *= 811589153 if $part2 # apply decryption key
   node = DLLNode.new(line)
   pointer = node if line.zero?
   node
@@ -60,10 +63,17 @@ raise '0 not found' unless pointer
 # Circular Link
 DLLNode.link(*(init_arr + [init_arr.first]))
 
-init_arr.each { _1.shift(_1.value) }
+if $part2
+  size_while_shifting = init_arr.size.pred
+  # Bane of Humongous Numbers (not a trademark)
+  shift_amounts = init_arr.map { _1.value % size_while_shifting }
+  10.times { init_arr.zip(shift_amounts) { _1.shift(_2) } }
+else # Part 1
+  init_arr.each { _1.shift(_1.value) }
+end
 
 puts(
-  'Part 1',
+  "Part #{$part2 ? 2 : 1}",
   3.times.sum do
     pointer = pointer.next(1000)
     pointer.value
