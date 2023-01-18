@@ -1,4 +1,4 @@
-monkeys = File.foreach('input.txt', chomp: true).to_h {|line| line.split(': ', 2) }
+monkeys = File.foreach('input.txt', chomp: true).to_h { _1.split(': ', 2) }
 
 def monkeys.yell(name)
   case self[name]
