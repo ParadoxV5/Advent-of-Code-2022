@@ -1,0 +1,1 @@
+$<.map{eval"def #{_1.sub':',' ='}"};p root
