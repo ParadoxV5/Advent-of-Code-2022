@@ -1,1 +1,1 @@
-$<.map{eval"def #{_1.sub':',' ='}"};p root
+p$<.map{eval"def ".+_1.sub':',' ='}&&root
