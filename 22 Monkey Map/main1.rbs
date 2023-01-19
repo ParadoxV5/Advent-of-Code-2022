@@ -1,0 +1,44 @@
+class ConvexBoard
+  class LandSequence
+    attr_reader range: Range[Integer]
+    attr_reader obstructions: Array[Integer]
+    
+    def initialize: (Range[Integer] range, Array[Integer] obstructions) -> void
+    def self.[]:
+      (*untyped array, ?is_land: _ToProc, ?is_obstruction: _ToProc) -> LandSequence
+    
+    def step: (Integer from, ?Integer to) -> Integer
+    def step_by: (Integer from, ?Integer steps) -> Integer
+  end
+  
+  type sequences = Array[LandSequence]
+  
+  attr_reader columns: sequences
+  attr_reader rows: sequences
+  attr_accessor x: Integer
+  attr_accessor y: Integer
+  attr_accessor facing: Integer
+  
+  def initialize: (
+    ?rows: sequences, ?columns: sequences,
+    ?x: Integer, ?y: Integer, ?facing: Integer
+  ) -> void
+  
+  def self.table_to_sequences:
+    (Array[Array[untyped]] table, ?is_land: _ToProc, is_obstruction: _ToProc)
+    -> sequences
+  def self.[]:
+    (Array[Array[untyped]] table, ?is_land: _ToProc, is_obstruction: _ToProc)
+    -> instance
+  
+  def row: -> Integer
+  def column: -> Integer
+  def facing!: -> Integer
+  def password: -> Integer
+  
+  def move: (?Integer steps) -> void
+  
+  def l: () -> Integer
+  def r: () -> Integer
+  def call: (String instruction) -> self
+end
