@@ -37,7 +37,12 @@ proposal_indices = [
   [4, 2, 7]
 ]
 
-10.times do
+round = 0
+continue_flag = true
+while continue_flag # set `continue_flag` to true if an elf moved (Part 2)
+  round += 1
+  continue_flag = false
+  
   elves_set = elves.to_set # Hash set = fast `include?`
   elves = elves.map do|elf| # first half
     absolute_adjacent = relative_adjacent.map do|adjacent| #=> [open_spaces…]
@@ -48,6 +53,7 @@ proposal_indices = [
       if absolute_adjacent.all?
         elf # does not do anything
       else
+        continue_flag = true
         proposal_index = proposal_indices.find do|indices|
           indices.all? { absolute_adjacent.fetch(_1) }
         end
@@ -59,14 +65,18 @@ proposal_indices = [
   end.group_by(&:first).flat_map do|proposal, pe_group| # second half
     pe_group.one? ? proposal : pe_group.map { _1.fetch(1) } # only or none
   end
+  
+  # Part 1
+  puts(
+    'Part 1',
+    elves.map(&:rectangular).transpose.map do|ords|
+      min, max = ords.minmax
+      max - min + 1
+    end.inject(:*) - elves.size
+  ) if round == 10
+  
   # at the end of the round
   proposal_indices.rotate!
 end
 
-puts(
-  'Part 1',
-  elves.map(&:rectangular).transpose.map do|ords|
-    min, max = ords.minmax
-    max - min + 1
-  end.inject(:*) - elves.size
-)
+puts 'Part 2', round
