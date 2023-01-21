@@ -64,9 +64,15 @@ loop do
         x, y = xy.rectangular
         next if blizzards.has_key?(xy) or
            # ram into a wall
-          x.negative? or y.negative? or x >= width or y >= height
+          x.negative? or y.negative? or x >= width or y >= height # [^1]
       end
       set << xy
     end
   end
 end
+
+# [^1]:
+#   The puzzle allows walking through a blizzard next door that is moving in the opposite direction,
+#   for it only compares the positions of the blizzard and the expedition and finds the two not shared.
+#   I’m not sure what’s the logic behind that.
+#   Perhaps it relate to the enigmatic mechanics behind the Conservation of Blizzard Energy?
