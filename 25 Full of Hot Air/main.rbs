@@ -1,0 +1,6 @@
+module SNAFU
+  DIGITS: Hash[String, Integer]
+  
+  def self?.snafu_to_integer: (String string) -> Integer
+  def self?.integer_to_snafu: (Integer integer) -> String
+end
