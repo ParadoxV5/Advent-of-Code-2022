@@ -7,11 +7,10 @@ require 'set' # Used for BFS only
 
 def multi_hash = Hash.new {|hsh, key| hsh[key] = [] }
 steps = {
-  # Specifically ordered to prioritize directions that go towards the exit
-  '>' =>  1.to_c,
+  '^' => -1i,
   'v' =>  1i,
   '<' => -1.to_c,
-  '^' => -1i,
+  '>' =>  1.to_c,
   nil =>  0.to_c
 }
 
@@ -33,43 +32,49 @@ blizzards, width, height = File.open('input.txt') do|input|
   [hsh, w, xy.imag.pred] # -1i for the bottom wall
 end
 
-entrance, target = -1i, Complex(width.pred, height)
-bfs = Set[entrance]
-minute = 0
-loop do
-  minute += 1
-  puts minute if $VERBOSE
-  
-  # Forecast blizzards’ move
-  blizzards = blizzards.each_with_object(multi_hash) do|(xy, deltas), hsh|
-    deltas.each do|delta|
-      x, y = (xy + delta).rectangular
-      hsh[Complex(x % width, y % height)] << delta
+timeout = 512
+dodge_blizzards = ->(start, target)do
+  bfs = Set[start]
+  (1...timeout).each do|minute|
+    puts minute if $VERBOSE
+    
+    # Forecast blizzards’ move
+    blizzards = blizzards.each_with_object(multi_hash) do|(xy, deltas), hsh|
+      deltas.each do|delta|
+        x, y = (xy + delta).rectangular
+        hsh[Complex(x % width, y % height)] << delta
+      end
     end
-  end
-  
-  # BFS, using a HashSet to eliminate repeats
-  # (previously with immobile obstacles,
-  #  repetition eliminations were done with `traversed` flags or equivalent)
-  bfs = bfs.each_with_object(Set.new) do|expedition, set|
-    steps.each do|_, xy|
-      xy += expedition
-      if xy == target
-        puts 'Part 1', minute
-        exit
+    
+    # BFS, using a HashSet to eliminate repeats
+    # (previously with immobile obstacles,
+    #  repetition eliminations were done with `traversed` flags or equivalent)
+    bfs = bfs.each_with_object(Set.new) do|expedition, set|
+      steps.each do|_, xy|
+        xy += expedition
+        # Always check target and allow waiting at the start first
+        # (They are otherwise out-of-bounds)
+        return minute if xy == target
+        if xy != start
+          x, y = xy.rectangular
+          next if blizzards.has_key?(xy) or
+             # ram into a wall
+            x.negative? or y.negative? or x >= width or y >= height # [^1]
+        end
+        set << xy
       end
-      
-      if xy != entrance
-        # Always allow waiting at the entrance (which is otherwise out-of-bounds)
-        x, y = xy.rectangular
-        next if blizzards.has_key?(xy) or
-           # ram into a wall
-          x.negative? or y.negative? or x >= width or y >= height # [^1]
-      end
-      set << xy
     end
   end
 end
+
+here, there = -1i, Complex(width.pred, height)
+part1 = dodge_blizzards.(here, there)
+puts(
+  'Part 1',
+  part1,
+  'Part 2',
+  part1 + dodge_blizzards.(there, here) + dodge_blizzards.(here, there)
+)
 
 # [^1]:
 #   The puzzle allows walking through a blizzard next door that is moving in the opposite direction,
