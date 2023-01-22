@@ -1,0 +1,23 @@
+class Board2D
+  type coord = Integer
+  
+  def self.read_file: (String filename) -> [Array[String], String]
+  def self.call: (String filename) ?{ (Array[String]) -> instance } -> Integer
+  
+  attr_accessor x: coord
+  attr_accessor y: coord
+  attr_accessor facing: Integer
+  
+  def initialize: (?x: coord, ?y: coord, ?facing: Integer) -> void
+  
+  def move: (?Integer steps) -> void
+  
+  def row: -> coord
+  def column: -> coord
+  def facing!: -> (0|1|2|3)
+  def password: -> Integer
+  
+  def l: () -> Integer
+  def r: () -> Integer
+  def call: (String instruction) -> self
+end

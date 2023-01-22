@@ -1,7 +1,9 @@
+require_relative 'board2d'
+
 # Board comprised of a single orthogonally convex shape
 # Compile to indices of board edges and walls
 # Local Wrap Around
-class ConvexBoard
+class ConvexBoard < Board2D
   class LandSequence
     # `@range` must not `#exclude_end?`
     attr_reader :range, :obstructions
@@ -57,7 +59,8 @@ class ConvexBoard
     rows: [], columns: [],
     x: rows.fetch(0).range.begin, y: 0, facing: 0
   )
-    @rows, @columns, @x, @y, @facing = rows, columns, x, y, facing
+    super(x:, y:, facing:)
+    @rows, @columns = rows, columns
   end
   
   def self.table_to_sequences(table, is_land: :itself, is_obstruction:)
@@ -70,11 +73,6 @@ class ConvexBoard
     )
   end
   
-  def row = y.succ
-  def column = x.succ
-  def facing! = self.facing %= 4
-  def password = 1000 * row + 4 * column + facing!
-  
   def move(steps = 1)
     case facing!
       when 0 then self.x =    rows.fetch(y).step_by(x, steps)
@@ -84,27 +82,16 @@ class ConvexBoard
       else # should not happen
     end
   end
-  
-  def l = self.facing -= 1
-  def r = self.facing += 1
-  def call(instruction) print(instruction)
-    case instruction
-      when 'R' then r
-      when 'L' then l
-      else move(Integer(instruction)); print "\t#{x}\t#{y}"
-    end;puts
-    self
-  end
 end
 
-*board, _, instructions = File.readlines('input.txt', chomp: true)
-board_width = board.map(&:size).max
-board = ConvexBoard[
-  board.map { _1.ljust(board_width).bytes },
-  is_land:        ->{ _1 != 0x20 }, # ` `
-  is_obstruction: ->{ _1 == 0x23 }  # `#`
-]
-
-instructions.scan(/\d++|./) { board.(_1) }
-
-puts 'Part 1', board.password
+puts(
+  'Part 1',
+  ConvexBoard.call('input.txt') do|board|
+    board_width = (board.map(&:size).max or 0)
+    ConvexBoard[
+      board.map { _1.ljust(board_width).bytes },
+      is_land: -> { _1 != 0x20 }, # ` `
+      is_obstruction: -> { _1 == 0x23 } # `#`
+    ]
+  end
+)

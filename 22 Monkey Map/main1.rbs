@@ -1,4 +1,4 @@
-class ConvexBoard
+class ConvexBoard < Board2D
   class LandSequence
     attr_reader range: Range[Integer]
     attr_reader obstructions: Array[Integer]
@@ -15,13 +15,9 @@ class ConvexBoard
   
   attr_reader columns: sequences
   attr_reader rows: sequences
-  attr_accessor x: Integer
-  attr_accessor y: Integer
-  attr_accessor facing: Integer
-  
   def initialize: (
     ?rows: sequences, ?columns: sequences,
-    ?x: Integer, ?y: Integer, ?facing: Integer
+    ?x: coord, ?y: coord, ?facing: Integer
   ) -> void
   
   def self.table_to_sequences:
@@ -30,15 +26,4 @@ class ConvexBoard
   def self.[]:
     (Array[Array[untyped]] table, ?is_land: _ToProc, is_obstruction: _ToProc)
     -> instance
-  
-  def row: -> Integer
-  def column: -> Integer
-  def facing!: -> Integer
-  def password: -> Integer
-  
-  def move: (?Integer steps) -> void
-  
-  def l: () -> Integer
-  def r: () -> Integer
-  def call: (String instruction) -> self
 end
