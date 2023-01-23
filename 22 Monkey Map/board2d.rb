@@ -14,11 +14,13 @@ class Board2D
   
   attr_accessor :x, :y, :facing
   def initialize(x: 0, y: 0, facing: 0)
-    @x, @y, @facing = x,  y,  facing
+    @x, @y, @facing = x, y, facing
   end
   
-  def row = y.succ
-  def column = x.succ
+  alias global_x x
+  alias global_y y
+  def row = global_y.succ
+  def column = global_x.succ
   def facing! = self.facing %= 4
   def password = 1000 * row + 4 * column + facing!
   

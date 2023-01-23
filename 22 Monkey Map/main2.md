@@ -7,6 +7,9 @@ only the wrapping connections have changed and now require updating the directio
 
 Conveniently, Part 2 has specified the 3D surface to be a cube with side lengths of 50 tiles;
 generalization to any rectangular prism is another challenge, let alone any rectangular polyhedra.
+
 Knowing the net is valid,
 programmatically converting the squares into 3Dly oriented cube faces only takes a quick traversal of 6 elements
 (including the root).
+One can chop the net into its component squares and travel on top of the cube;
+or only map them to abstract oriented faces, processing just the cube edges with it while walking on the original net.

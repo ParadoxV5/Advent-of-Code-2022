@@ -1,0 +1,28 @@
+class CubeNetBoard < Board2D
+  type net = Array[Array[bool?]]
+  
+  class CubeFace
+    type neighbor = [instance, Integer]
+    type neighbors = [neighbor?, neighbor?, neighbor?, neighbor?]
+    attr_accessor neighbors: neighbors
+    def initialize: (?neighbors neighbors) -> void
+  end
+  
+  attr_reader net: net
+  attr_reader current_face: CubeFace
+  attr_reader side_length: Integer
+  @face_coords: Hash[CubeFace, [coord, coord]]
+  @bx: coord
+  @by: coord
+  def initialize: (
+    net net, Hash[CubeFace, [coord, coord]] face_coords, Integer side_length,
+    ?x: coord, ?y: coord, ?facing: Integer,
+  ) -> void
+end
+
+N: CubeNetBoard::CubeFace
+S: CubeNetBoard::CubeFace
+W: CubeNetBoard::CubeFace
+E: CubeNetBoard::CubeFace
+U: CubeNetBoard::CubeFace
+D: CubeNetBoard::CubeFace
