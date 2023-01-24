@@ -1,0 +1,22 @@
+class WeightedNode[V, N < Numeric]
+  attr_accessor value: V
+  attr_reader neighbors: Hash[instance, N]
+  attr_accessor traversed: boolish?
+  def initialize: (V value) -> void
+  
+  def []: (instance) -> N
+  def []=: (instance, N) -> N
+  
+  def unvisited_neighbors: -> Hash[instance, N]
+  
+  def shallow_clone: -> instance
+end
+
+type valve = WeightedNode[Integer, Integer]
+type valve_hash = Hash[String, valve]
+ALL_VALVES: valve_hash
+INTERESTED_VALVES: valve_hash
+
+class Object
+  def maximum_release: (Integer minutes, ?valve here) -> Integer
+end
