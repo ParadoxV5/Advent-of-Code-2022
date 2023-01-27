@@ -16,7 +16,9 @@ type valve = WeightedNode[Integer, Integer]
 type valve_hash = Hash[String, valve]
 ALL_VALVES: valve_hash
 INTERESTED_VALVES: valve_hash
+AA: valve
 
 class Object
-  def maximum_release: (Integer minutes, ?valve here) -> Integer
+  def maximum_release: (Integer minutes, ?here: valve) -> Integer
+  def maximum_release_two_players: (Integer minutes, ?here: valve) -> Integer
 end

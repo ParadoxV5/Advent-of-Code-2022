@@ -73,13 +73,15 @@ selected_valves.to_a.combination(2) do|(aa, a), (bb, b)|
     raise "No path from #{a} to #{b}"
   end
 end
+AA = INTERESTED_VALVES.fetch('AA')
 
+# Part 1:
 # Brute-Force (it __is__, pretty much) Recursive Depth-First Search
-def maximum_release(minutes, here = INTERESTED_VALVES.fetch('AA'))
+def maximum_release(minutes, here: AA)
   here.traversed = true
   max_others = here.unvisited_neighbors
     .select {|_, weight| minutes > weight } # only consider reachable ones
-    .map {|neighbor, weight| maximum_release(minutes - weight, neighbor) }
+    .map {|neighbor, weight| maximum_release(minutes - weight, here: neighbor) }
     .max
   here.traversed = false
   profit = here.value * minutes
@@ -87,3 +89,34 @@ def maximum_release(minutes, here = INTERESTED_VALVES.fetch('AA'))
   profit
 end
 puts 'Part 1', maximum_release(30)
+
+# Part 2:
+# I admit: planning for two salespersons got me initially. But, after browsing related topics
+# (including others’ solutions), I’m enlightened that I don’t need to synchronize the two runners.
+# Because the task assignment essentially divides the labour between the two,
+# it is equivalent to assigning each salesperson’s work individually.
+# The total of their separate sets is the sum of their outputs.
+# Instead of evaluating every possible subset, I’m only considering half-half divides.
+# Proposition: It always takes more time to take one more task than to leave it to a less-utilized member.
+# There are plenty of room for further optimizations, though being the NP-hard part of the problem,
+# it will likely never go below `O(2ⁿ/√n)`[^bc] for the combinations enumeration alone.
+# [^bc]: https://math.stackexchange.com/a/3743456
+def maximum_release_two_players(minutes, here: AA)
+  others = here.neighbors.keys
+  size = others.size
+  warn "Up to (2^#{size} ÷ √#{size}) iterations – buckle up."
+  max = 0
+  others.combination(size / 2) do|subset1|
+    subset1.each { _1.traversed = true } # exclude `subset1` from this search
+    subset2 = here.neighbors.each_key.reject(&:traversed)
+      # fetch the non-excluded valves
+    pressure = maximum_release(minutes, here:) # Luigi Start!
+    subset2.each {  _1.traversed = true } # now exclude `subset2` this search
+    subset1.each { _1.traversed = false } # revert excluding `subset1`
+    pressure += maximum_release(minutes, here:) # Mario Start!
+    subset2.each { _1.traversed = false } # revert excluding `subset2`
+    max = pressure if pressure > max
+  end
+  max
+end
+puts 'Part 2', maximum_release_two_players(26)
