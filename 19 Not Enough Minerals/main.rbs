@@ -1,0 +1,36 @@
+type list[E] = Array[E]
+type nilable_list[E] = list[E?]
+type pos_int = Integer
+
+class Blueprint
+  attr_reader matrix: list[nilable_list[pos_int]]
+  attr_reader max_consumption: nilable_list[pos_int]
+  def initialize: (list[nilable_list[pos_int]] matrix) -> void
+end
+
+class SaveState[B < Blueprint]
+  attr_accessor blueprint: B
+  attr_reader robots: list[pos_int]
+  attr_reader resources: list[Integer]
+  attr_reader time: Integer
+  def initialize: (
+    B blueprint,
+    ?list[pos_int] robots,
+    ?list[pos_int] resources,
+    ?Integer time
+  ) -> void
+  
+  def build_time: (pos_int index) -> pos_int?
+  def next_states: (max_time: Integer?) -> Array[instance]
+  def states_at: (Integer max_time, ?optimize: boolish) -> Array[instance]
+end
+
+class Day19Blueprint < Blueprint
+  attr_reader id: pos_int
+  def initialize: (String string) -> void
+end
+
+class Day19SaveState < SaveState[Day19Blueprint]
+  def geodes: () -> Integer
+  def quality_level: () -> Integer
+end
