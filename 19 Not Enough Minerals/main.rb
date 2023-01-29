@@ -25,17 +25,20 @@ class SaveState
     @blueprint, @resources, @robots, @time = blueprint, resources, robots, time
   end
   
+  # @raise {ZeroDivisionError} if `rate.zero?`
+  def self.non_neg_ceildiv(required, current, rate) =
+    (current >= required) ? 0 : (required - current).ceildiv(rate)
   # @return
-  #   the time it takes to gather the materials for building the robot of type `index` ASAP
+  #   the time it takes to gather the resources for building the robot of type `index` ASAP
   #   (excluding the 1 `time`-unit for building it);
-  #   returns `nil` if the type has infinite wait time because there’re no suppliers for certain dependency material(s)
+  #   returns `nil` if the type has infinite wait time because there’re no suppliers for certain dependency resource(s)
   def build_time(index)
     resources
       .zip(blueprint.matrix[index], robots)
       .filter_map do|res, cost, robot|
         if cost&.positive?
           return nil if robot.zero?
-          (cost - res).ceildiv(robot)
+          self.class.non_neg_ceildiv(cost, res, robot)
         end
       end.max or 0
   end
@@ -58,7 +61,7 @@ class SaveState
       next unless elapsed_time
       elapsed_time += 1 # the 1 `time`-unit for building it
       time2 = time + elapsed_time
-      next if max_time&.< time
+      next if max_time&.< time2
       
       # new robot is ready
       robots2 = robots.dup
@@ -93,12 +96,11 @@ class SaveState
   
   # @return states at time `max_time` that are reached by enumerating though {next_states}.
   # @param optimize (TODO)
-  #   if `true`, eliminate states that yield less than another state with the same {robots} count at time `time`;
+  #   if `true`, eliminate states whose yield at time `time` is  another state with the same {robots} count;
   #   if `false`, includes all states regardless of their profits **(warning: expect `Θ(kⁿ)`)**
   def states_at(max_time, optimize: true)
     bfs = {time => [self]} #=> {t => [states…], …}
     (time...max_time).each do|t|
-      warn t #if $VERBOSE#FIXME
       states_this_time = bfs.delete(t)
       next unless states_this_time
       bfs.merge!(
@@ -150,9 +152,11 @@ class Day19SaveState < SaveState
       index2 = index.pred
       robot2 = robots[index2]
       return nil if robot2.zero?
-      (recipe[index2] - resources[index2]).ceildiv(robot2)
+      self.class.non_neg_ceildiv(recipe[index2], resources[index2], robot2)
     end
-    wait_time = (recipe.first - resources.first).ceildiv(robots.first)
+    # noinspection all (suppress nilability of the `.first` calls)
+    wait_time =
+      self.class.non_neg_ceildiv(recipe.first, resources.first, robots.first)
     (wait_time2&.> wait_time) ? wait_time2 : wait_time
   end
 end

@@ -1,32 +1,34 @@
 type list[E] = Array[E]
 type nilable_list[E] = list[E?]
-type pos_int = Integer
+type non_neg_int = Integer
 
 class Blueprint
-  attr_reader matrix: list[nilable_list[pos_int]]
-  attr_reader max_consumption: nilable_list[pos_int]
-  def initialize: (list[nilable_list[pos_int]] matrix) -> void
+  attr_reader matrix: list[nilable_list[non_neg_int]]
+  attr_reader max_consumption: nilable_list[non_neg_int]
+  def initialize: (list[nilable_list[non_neg_int]] matrix) -> void
 end
 
 class SaveState[B < Blueprint]
   attr_accessor blueprint: B
-  attr_reader robots: list[pos_int]
+  attr_reader robots: list[non_neg_int]
   attr_reader resources: list[Integer]
   attr_reader time: Integer
   def initialize: (
     B blueprint,
-    ?list[pos_int] robots,
-    ?list[pos_int] resources,
+    ?list[non_neg_int] robots,
+    ?list[non_neg_int] resources,
     ?Integer time
   ) -> void
   
-  def build_time: (pos_int index) -> pos_int?
+  def self.non_neg_ceildiv:
+    (non_neg_int required, non_neg_int current, non_neg_int rate) -> non_neg_int
+  def build_time: (non_neg_int index) -> non_neg_int?
   def next_states: (max_time: Integer?) -> Array[instance]
   def states_at: (Integer max_time, ?optimize: boolish) -> Array[instance]
 end
 
 class Day19Blueprint < Blueprint
-  attr_reader id: pos_int
+  attr_reader id: Integer
   def initialize: (String string) -> void
 end
 
