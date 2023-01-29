@@ -47,8 +47,11 @@ dodge_blizzards = ->(start, target)do
     end
     
     # BFS, using a HashSet to eliminate repeats
-    # (previously with immobile obstacles,
-    #  repetition eliminations were done with `traversed` flags or equivalent)
+    # (previously with immobile obstacles, repetition eliminations were done with `traversed` flags or equivalent)
+    # [P.S.] Turns out that this repeats eliminator reduces the decision tree from `O(5ⁿ)` –
+    # move one of 4 directions or wait still for each minute – to `O(kn)` –
+    # there’s a limited number of positions the expedition can be at (`k`) at any given minute
+    # (more precisely, up to `valley width × valley length - number of blizzards` positions).
     bfs = bfs.each_with_object(Set.new) do|expedition, set|
       steps.each do|_, xy|
         xy += expedition
