@@ -9,10 +9,11 @@ class Blueprint
 end
 
 class SaveState[B < Blueprint]
-  attr_accessor blueprint: B
+  attr_reader blueprint: B
   attr_reader robots: list[non_neg_int]
   attr_reader resources: list[Integer]
   attr_reader time: Integer
+  attr_reader resources_at: Hash[Integer, list[Integer]]
   def initialize: (
     B blueprint,
     ?list[non_neg_int] robots,
@@ -20,11 +21,14 @@ class SaveState[B < Blueprint]
     ?Integer time
   ) -> void
   
-  def self.non_neg_ceildiv:
+  private def non_neg_ceildiv:
     (non_neg_int required, non_neg_int current, non_neg_int rate) -> non_neg_int
+  
   def build_time: (non_neg_int index) -> non_neg_int?
-  def next_states: (max_time: Integer?) -> Array[instance]
-  def states_at: (Integer max_time, ?optimize: boolish) -> Array[instance]
+  def next_states:
+    (max_time: Integer?) ?{ (instance new_state) -> boolish } -> Array[instance]
+  def states_at:
+    (Integer max_time) ?{ (instance new_state) -> boolish } -> Array[instance]
 end
 
 class Day19Blueprint < Blueprint
@@ -34,5 +38,6 @@ end
 
 class Day19SaveState < SaveState[Day19Blueprint]
   def geodes: () -> Integer
-  def quality_level: () -> Integer
+
+  def max_geodes_at: (Integer max_time) -> Integer
 end
