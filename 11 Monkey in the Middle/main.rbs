@@ -3,14 +3,14 @@ class Monkey
   attr_accessor self.part1: boolish
   MONKEYS: Array[Monkey]
 
-  attr_accessor items: int
-  @operation: Proc
-  @test_divisor: untyped
+  attr_accessor items: Array[int]
+  @operation: ^(Integer) -> Integer
+  @test_divisor: int
   @true_target: int
   @false_target: int
-  attr_accessor inspect_count: int
+  attr_accessor inspect_count: Integer
   
-  def initialize: (int items, _ToS operation, int test_divisor, int true_target, int false_target) -> void
+  def initialize: (Array[int] items, _ToS operation, int test_divisor, int true_target, int false_target) -> void
   
   def inspect_items: () -> void
   def self.inspect_items: () -> void
