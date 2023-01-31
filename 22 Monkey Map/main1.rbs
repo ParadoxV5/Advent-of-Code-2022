@@ -1,11 +1,19 @@
+interface _FilterToProc[T]
+  include _ToProc
+  def to_proc: () -> ^(T) -> boolish
+end
+
 class ConvexBoard < Board2D
   class LandSequence
     attr_reader range: Range[Integer]
     attr_reader obstructions: Array[Integer]
     
     def initialize: (Range[Integer] range, Array[Integer] obstructions) -> void
-    def self.[]:
-      (*untyped array, ?is_land: _ToProc, ?is_obstruction: _ToProc) -> LandSequence
+    def self.[]: [E] (
+      *E array,
+      ?is_land: _FilterToProc[E],
+      ?is_obstruction: _FilterToProc[Integer]
+    ) -> LandSequence
     
     def step: (Integer from, ?Integer to) -> Integer
     def step_by: (Integer from, ?Integer steps) -> Integer
@@ -20,10 +28,14 @@ class ConvexBoard < Board2D
     ?x: coord, ?y: coord, ?facing: Integer
   ) -> void
   
-  def self.table_to_sequences:
-    (Array[Array[untyped]] table, ?is_land: _ToProc, is_obstruction: _ToProc)
-    -> sequences
-  def self.[]:
-    (Array[Array[untyped]] table, ?is_land: _ToProc, is_obstruction: _ToProc)
-    -> instance
+  def self.table_to_sequences: [E] (
+    Array[Array[untyped]] table,
+    ?is_land: _FilterToProc[E],
+    is_obstruction: _FilterToProc[Integer]
+  ) -> sequences
+  def self.[]: [E] (
+    Array[Array[untyped]] table,
+    ?is_land: _FilterToProc[E],
+    is_obstruction: _FilterToProc[Integer]
+  ) -> instance
 end
