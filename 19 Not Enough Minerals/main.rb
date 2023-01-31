@@ -158,7 +158,6 @@ class Day19SaveState < SaveState
       return nil if robot2.zero?
       non_neg_ceildiv(recipe[i2], resources[i2], robot2)
     end
-    # noinspection all (suppress nilability of the `.first` calls)
     wait_time = non_neg_ceildiv(recipe.first, resources.first, robots.first)
     (wait_time2&.> wait_time) ? wait_time2 : wait_time
   end
@@ -202,7 +201,6 @@ class Day19SaveState < SaveState
         #    = (2aₙ + (1 - n)) × n / 2
         #    = (2 × (elapsed_time - 1) + 1 - n) × n / 2
         #    = elapsed_time × 2 - 2 + 1 - est_robot2)) × est_robot2 / 2
-        # noinspection all (suppress nilability of `#min` of non-empty array)
         (2 * elapsed_time - est_robot2).pred * est_robot2 / 2 + res2
       end > max_geodes
     end
