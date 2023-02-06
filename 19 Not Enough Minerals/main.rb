@@ -32,7 +32,7 @@ class SaveState
   
   # @raise {ZeroDivisionError} if `rate.zero?`
   private def non_neg_ceildiv(required, current, rate) =
-    (current >= required) ? 0 : (required - current).ceildiv(rate)
+    current >= required ? 0 : (required - current).pred / rate + 1
   
   # @return
   #   the time it takes to gather the resources for building the robot of type `i` ASAP
