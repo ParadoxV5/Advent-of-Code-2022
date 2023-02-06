@@ -1,4 +1,4 @@
-Copyright (c) 2022 ParadoxV5
+Copyright (c) 2023 ParadoxV5
 
 The Universal Permissive License (UPL), Version 1.0
 
